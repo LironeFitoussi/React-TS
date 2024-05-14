@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Timer({ name, duration }: TimerProps) {
   const [remainingTime, setRemainingTime] = useState(duration * 1000);
-  const interval = useRef<number | null>(null);
+  const interval = useRef<number | null | NodeJS.Timeout>(null);
   const { isRunning } = useTimersContext();
 
   if (remainingTime <= 0 && interval.current) {
@@ -12,7 +12,7 @@ export default function Timer({ name, duration }: TimerProps) {
   }
 
   useEffect(() => {
-    let timer: number;
+    let timer: NodeJS.Timeout | number;
     if (isRunning) {
       timer = setInterval(() => {
         setRemainingTime((prevTime) => {
